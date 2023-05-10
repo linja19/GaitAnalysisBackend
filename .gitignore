@@ -1,0 +1,7 @@
+.idea
+db.sqlite3
+test.txt
+/venv
+/api/migrations
+/api/__pycache__
+/GaitAnalysisBackend/__pycache__
