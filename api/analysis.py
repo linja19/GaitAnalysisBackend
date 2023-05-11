@@ -9,7 +9,7 @@ def analyze_data(_data,template):
     data = copy.deepcopy(_data)
     time = data["t"][len(data) - 1]
     # create figure
-    fig, axs = plt.subplots(3, 1, constrained_layout=True, sharex=True)
+    # fig, axs = plt.subplots(3, 1, constrained_layout=True, sharex=True)
     data["t"] = data["t"].map(lambda x: (x - data.iloc[0,0])/1000)
 
     # lowpass filter data
@@ -172,12 +172,12 @@ def analyze_data(_data,template):
     print("Asymmetry ", ave_symm)
 
     # figure
-    def plot():
-        axs[1].set_xlabel('time(s)', fontsize=15)
-        axs[1].set_ylabel('Angular Speed', fontsize=15)
-        axs[1].set_title("Angular Speed with Time")
-        axs[0].plot(filted_df["t"],filted_df["Y"],label="Filtered0.8_Y_left", color='red', alpha=0.8)
-        axs[1].plot(filted_df["t"],filted_df["gX"],label="Filtered0.8_GX_left", color='red', alpha=0.8)
+    # def plot():
+        # axs[1].set_xlabel('time(s)', fontsize=15)
+        # axs[1].set_ylabel('Angular Speed', fontsize=15)
+        # axs[1].set_title("Angular Speed with Time")
+        # axs[0].plot(filted_df["t"],filted_df["Y"],label="Filtered0.8_Y_left", color='red', alpha=0.8)
+        # axs[1].plot(filted_df["t"],filted_df["gX"],label="Filtered0.8_GX_left", color='red', alpha=0.8)
         # axs[0].scatter(
         #     filted_df.iloc[acc_extrema_list]["t"],
         #     filted_df.iloc[acc_extrema_list]["Y"],
@@ -192,20 +192,20 @@ def analyze_data(_data,template):
         #     alpha=0.5,
         #     label='minima'
         # )
-        axs[0].set_xlabel('time(s)', fontsize=15)
-        axs[0].set_ylabel('Acceleration Y', fontsize=15)
-        axs[0].set_title("Acceleration Y with Time")
-
-        axs[1].scatter(
-            filted_df.iloc[gyro_extrema_list]["t"],
-            filted_df.iloc[gyro_extrema_list]["gX"],
-            c='blue',
-            label='minima'
-        )
-        axs[2].plot(filted_df["t"],filted_df["Z"],label="Filtered0.8_Y_left", color='red')
-        axs[2].set_xlabel('time(s)', fontsize=15)
-        axs[2].set_ylabel('Acceleration Z', fontsize=15)
-        axs[2].set_title("Acceleration Z with Time")
+        # axs[0].set_xlabel('time(s)', fontsize=15)
+        # axs[0].set_ylabel('Acceleration Y', fontsize=15)
+        # axs[0].set_title("Acceleration Y with Time")
+        #
+        # axs[1].scatter(
+        #     filted_df.iloc[gyro_extrema_list]["t"],
+        #     filted_df.iloc[gyro_extrema_list]["gX"],
+        #     c='blue',
+        #     label='minima'
+        # )
+        # axs[2].plot(filted_df["t"],filted_df["Z"],label="Filtered0.8_Y_left", color='red')
+        # axs[2].set_xlabel('time(s)', fontsize=15)
+        # axs[2].set_ylabel('Acceleration Z', fontsize=15)
+        # axs[2].set_title("Acceleration Z with Time")
 
         # axs[2].scatter(
         #     filted_df.iloc[accZ_maxima_list]["t"],
@@ -219,46 +219,46 @@ def analyze_data(_data,template):
         #     c='green',
         #     label='minima'
         # )
-        axs[0].scatter(
-            leftHS_t2,
-            leftHS_Y,
-            c='green',
-            label='right Heel Strike'
-        )
-        axs[0].scatter(
-            rightTO_t2,
-            rightTO_Y,
-            c='purple',
-            label='left Toe Off'
-        )
-        axs[0].scatter(
-            rightHS_t2,
-            rightHS_Y,
-            c='black',
-            label='left Heel Strike'
-        )
-        axs[2].scatter(
-            leftHS_t2,
-            leftHS_Z,
-            c='green',
-            label='right Heel Strike'
-        )
-        axs[2].scatter(
-            rightTO_t2,
-            rightTO_Z,
-            c='purple',
-            label='left Toe Off'
-        )
-        axs[2].scatter(
-            rightHS_t2,
-            rightHS_Z,
-            c='black',
-            label='left Heel Strike'
-        )
-        axs[0].legend()
-        axs[1].legend()
-        axs[2].legend()
-        plt.show()
+        # axs[0].scatter(
+        #     leftHS_t2,
+        #     leftHS_Y,
+        #     c='green',
+        #     label='right Heel Strike'
+        # )
+        # axs[0].scatter(
+        #     rightTO_t2,
+        #     rightTO_Y,
+        #     c='purple',
+        #     label='left Toe Off'
+        # )
+        # axs[0].scatter(
+        #     rightHS_t2,
+        #     rightHS_Y,
+        #     c='black',
+        #     label='left Heel Strike'
+        # )
+        # axs[2].scatter(
+        #     leftHS_t2,
+        #     leftHS_Z,
+        #     c='green',
+        #     label='right Heel Strike'
+        # )
+        # axs[2].scatter(
+        #     rightTO_t2,
+        #     rightTO_Z,
+        #     c='purple',
+        #     label='left Toe Off'
+        # )
+        # axs[2].scatter(
+        #     rightHS_t2,
+        #     rightHS_Z,
+        #     c='black',
+        #     label='left Heel Strike'
+        # )
+        # axs[0].legend()
+        # axs[1].legend()
+        # axs[2].legend()
+        # plt.show()
     # plot()
 
     result = {
