@@ -42,11 +42,14 @@ def get_param(request,userID):
     assym_list = Asymmetry.objects.filter(userID=user)
     assym = list()
     for each in assym_list:
-        timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
-        dt_object = datetime.fromtimestamp(timestamp)
-        assym.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
+        if each.value=='NaN':
+            each.delete()
+        else:
+            timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
+            dt_object = datetime.fromtimestamp(timestamp)
+            assym.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
 
-    res = {"double":double,"variation":swing,"assym":assym}
+    res = {"double":double,"variation":swing,"asymm":assym}
     return Response(res)
 
 @api_view(['POST'])
@@ -83,7 +86,7 @@ def upload_data(request,userID):
     if res["Asymmetry"]:
         assym = Asymmetry(userID=user,timestamp=res["time"],value=res["Asymmetry"])
         assym.save()
-    if res["SwingVar"]:
+    if res["SwingVar"] and not res["SwingVar"]=='NaN':
         swingVar = SwingVariance(userID=user,timestamp=res["time"],value=res["SwingVar"])
         swingVar.save()
     return Response(res)
