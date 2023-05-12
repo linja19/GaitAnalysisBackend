@@ -33,3 +33,14 @@ class SwingVariance(models.Model):
 
     def __str__(self):
         return str(self.userID)+" "+str(self.value)
+
+class Experiment(models.Model):
+    userID = models.ForeignKey(User,on_delete=models.CASCADE)
+    timestamp = models.CharField(max_length=15)
+    signal = models.TextField(blank=True)
+    double = models.CharField(max_length=10,null=True)
+    asymm = models.CharField(max_length=10,null=True)
+    swing = models.CharField(max_length=10,null=True)
+
+    def __str__(self):
+        return str(self.userID)+" "+str(self.timestamp)

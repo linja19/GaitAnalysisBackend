@@ -67,6 +67,9 @@ def create_template(request,userID):
     user.save()
     param = analyze_data(df, res)
     # res = loads(res.to_json(orient="records"))
+    df_json_str = df.to_json(orient="records")
+    exp = Experiment(userID=user,signal=df_json_str,double=param["Double"],swing=param["SwingVar"],asymm=param["Asymmetry"],timestamp=param["time"])
+    exp.save()
     return Response(param)
 
 @api_view(['POST'])
