@@ -375,7 +375,7 @@ def get_template(_data):
             pass
     total_len = len(funda_list) - j - 1
     average_Y_list = np.zeros(51)
-
+    p = pd.DataFrame()
     for each_list in template_list:
         for i in range(len(each_list)-1):
             _start = each_list[i]["rightHS_t"]
@@ -394,6 +394,7 @@ def get_template(_data):
             #     plt.legend()
             #     plt.show()
             average_Y_list = average_Y_list + p["Y"]/total_len
-    p["Y"] = average_Y_list
-    p = normalize_Y(p)
+    if not p.empty:
+        p["Y"] = average_Y_list
+        p = normalize_Y(p)
     return p
