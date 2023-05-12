@@ -29,7 +29,7 @@ class Asymmetry(models.Model):
 class SwingVariance(models.Model):
     userID = models.ForeignKey(User,on_delete=models.CASCADE)
     timestamp = models.CharField(max_length=15)
-    value = models.DecimalField(decimal_places=4,max_digits=6)
+    value = models.DecimalField(decimal_places=4,max_digits=6,null=True)
 
     def __str__(self):
         return str(self.userID)+" "+str(self.value)
