@@ -54,14 +54,17 @@ def get_param(request,userID):
 
 @api_view(['POST'])
 def create_template(request,userID):
+    user = get_or_create_user(userID)
     data = request.data
     # print(data)
     df = pd.DataFrame(data)
+    df_json_str = df.to_json(orient="records")
+    exp = Experiment(userID=user, signal=df_json_str)
+    exp.save()
     res = get_template(df)
     if res.empty:
         return Response({"error":"get template error"})
     json_str = res.to_json(orient="records")
-    user = get_or_create_user(userID)
     user.signal = json_str
     user.last_update = str(int(time.time()))
     user.save()
