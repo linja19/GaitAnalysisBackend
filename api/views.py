@@ -35,19 +35,19 @@ def get_param(request,userID):
     swing_list = SwingVariance.objects.filter(userID=user)
     swing = list()
     for each in swing_list:
-        timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
-        dt_object = datetime.fromtimestamp(timestamp)
-        swing.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
-
-    assym_list = Asymmetry.objects.filter(userID=user)
-    assym = list()
-    for each in assym_list:
         if each.value=='NaN':
             each.delete()
         else:
             timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
             dt_object = datetime.fromtimestamp(timestamp)
-            assym.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
+            swing.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
+
+    assym_list = Asymmetry.objects.filter(userID=user)
+    assym = list()
+    for each in assym_list:
+        timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
+        dt_object = datetime.fromtimestamp(timestamp)
+        assym.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
 
     res = {"double":double,"variation":swing,"asymm":assym}
     return Response(res)
