@@ -61,18 +61,21 @@ def create_template(request,userID):
     df_json_str = df.to_json(orient="records")
     exp = Experiment(userID=user, signal=df_json_str)
     exp.save()
-    res = get_template(df)
-    if res.empty:
-        return Response({"error":"get template error"})
-    json_str = res.to_json(orient="records")
-    user.signal = json_str
-    user.last_update = str(int(time.time()))
-    user.save()
-    param = analyze_data(df, res)
-    # res = loads(res.to_json(orient="records"))
-    df_json_str = df.to_json(orient="records")
-    exp = Experiment(userID=user,signal=df_json_str,double=param["Double"],swing=param["SwingVar"],asymm=param["Asymmetry"],timestamp=param["time"])
-    exp.save()
+    try:
+        res = get_template(df)
+        if res.empty:
+            return Response({"error":"get template error"})
+        json_str = res.to_json(orient="records")
+        user.signal = json_str
+        user.last_update = str(int(time.time()))
+        user.save()
+        param = analyze_data(df, res)
+        # res = loads(res.to_json(orient="records"))
+        df_json_str = df.to_json(orient="records")
+        exp = Experiment(userID=user,signal=df_json_str,double=param["Double"],swing=param["SwingVar"],asymm=param["Asymmetry"],timestamp=param["time"])
+        exp.save()
+    except:
+        pass
     return Response(param)
 
 @api_view(['POST'])
