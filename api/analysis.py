@@ -363,6 +363,8 @@ def get_template(_data):
     med = calculate_average(delta_t)
     j = 0
     template_list.append([])
+    if len(funda_list) == 0:
+        return pd.DataFrame()
     template_list[j].append(funda_list[0])
     for i in range(len(funda_list) - 1):
         try:
