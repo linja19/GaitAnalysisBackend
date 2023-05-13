@@ -61,6 +61,7 @@ def create_template(request,userID):
     df_json_str = df.to_json(orient="records")
     exp = Experiment(userID=user, signal=df_json_str)
     exp.save()
+    param = {}
     try:
         res = get_template(df)
         if res.empty:
