@@ -58,7 +58,7 @@ def analyze_data(_data,template):
         n = each
         if gyro_extrema_list[0]>n:
             continue
-        while(j<len(accZ_minima_list) and accZ_minima_list[j]<n):
+        while(j<len(accZ_maxima_list) and accZ_maxima_list[j]<n):
             j = j + 1
         HS_t = filted_df.iloc[n]["t"] #accZ的局部最高为同侧触地
         HS_Z = filted_df.iloc[n]["Z"]
@@ -307,7 +307,7 @@ def get_template(_data):
         n = each
         if gyro_extrema_list[0] > n:
             continue
-        while (accZ_minima_list[j] < n):
+        while (accZ_maxima_list[j] < n):
             j = j + 1
         HS_t = filted_df.iloc[n]["t"]  # accZ的局部最高为同侧触地
         # HS_Z = filted_df.iloc[n]["Z"]

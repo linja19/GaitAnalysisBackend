@@ -19,6 +19,7 @@ def get_or_create_user(userID):
         user = User.objects.get(userID=userID)
     except:
         user = User(userID=userID)
+        user.save()
     return user
 
 @api_view(['GET'])
