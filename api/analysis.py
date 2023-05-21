@@ -38,6 +38,7 @@ def analyze_data(_data,template):
     gyro_extrema_list = get_minima(filtedDataGX,15,gyroX_min*0.7)
 
     if not acc_extrema_list or not gyro_extrema_list or not accZ_maxima_list or not accZ_minima_list:
+        print("extrema not found")
         return {}
 
     j = 0
@@ -106,7 +107,7 @@ def analyze_data(_data,template):
             right = t - last_rightHS_t
             # print("left",left)
             # print("right",right)
-            symm = left / right
+            symm = min(left,right) / max(left,right)
             funda_dict["symmetry"] = abs(1-symm)
         last_rightHS_t = HS_t
         if bool(funda_dict):
@@ -114,7 +115,9 @@ def analyze_data(_data,template):
         # max: 0.2/(0.3+0.2)=0.4
         # min: 0.1/(0.6+0.1)=0.14
 
-    if not funda_list: return {}
+    if not funda_list:
+        print("funda_list empty")
+        return {}
 
     delta_t = list()
     template_list = list()
@@ -128,6 +131,8 @@ def analyze_data(_data,template):
     med = calculate_average(delta_t)
     j = 0
     template_list.append([])
+    if len(funda_list) == 0:
+        return {}
     template_list[j].append(funda_list[0])
     for i in range(len(funda_list) - 1):
         try:
@@ -142,21 +147,24 @@ def analyze_data(_data,template):
     final_list = list()
     for each_list in template_list:
         for i in range(len(each_list) - 1):
-            _start = each_list[i]["rightHS_t"]
-            _end = each_list[i + 1]["rightHS_t"]
-            p = cut(data, _start, _end)
-            p = normalize_t(p)
-            p = normalize_Y(p)
-            norm_a = np.linalg.norm(p["Y"])
-            p["Y"] = p["Y"] / norm_a
-            corr = np.correlate(template["Y"], p["Y"], mode='valid')
-            # if i == 1:
-            #     print(1)
-            #     plt.plot(p["Y"])
-            #     plt.plot(template["Y"], color='red')
-            #     plt.show()
-            if corr > 0.95:
-                final_list.append(each_list[i])
+            try:
+                _start = each_list[i]["rightHS_t"]
+                _end = each_list[i + 1]["rightHS_t"]
+                p = cut(data, _start, _end)
+                p = normalize_t(p)
+                p = normalize_Y(p)
+                norm_a = np.linalg.norm(p["Y"])
+                p["Y"] = p["Y"] / norm_a
+                corr = np.correlate(template["Y"], p["Y"], mode='valid')
+                # if i == 1:
+                #     print(1)
+                #     plt.plot(p["Y"])
+                #     plt.plot(template["Y"], color='red')
+                #     plt.show()
+                if corr > 0.95:
+                    final_list.append(each_list[i])
+            except:
+                pass
 
     ave_stance = calculate_average_in_dict(final_list,"stance_t")
     ave_swing = calculate_average_in_dict(final_list,"swing_t")
@@ -317,7 +325,7 @@ def get_template(_data):
         TO_t = filted_df.iloc[gyro_extrema_list[m - 2]]["t"]  # HS前的gyroX局部最低为同侧离地
         # TO_Z = filted_df.iloc[gyro_extrema_list[m - 2]]["Z"]
         # TO_Y = filted_df.iloc[gyro_extrema_list[m - 2]]["Y"]
-        while acc_extrema_list[k] < gyro_extrema_list[m - 2]:
+        while k<len(acc_extrema_list) and acc_extrema_list[k] < gyro_extrema_list[m - 2]:
             k = k + 1
         t = filted_df.iloc[acc_extrema_list[k - 1]]["t"]  # TO前的accY局部最低为对侧触地
         # Z = filted_df.iloc[acc_extrema_list[k - 1]]["Z"]
@@ -399,4 +407,6 @@ def get_template(_data):
     if not p.empty:
         p["Y"] = average_Y_list
         p = normalize_Y(p)
+        norm = np.linalg.norm(p["Y"])
+        p["Y"] = p["Y"] / norm
     return p

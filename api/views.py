@@ -104,3 +104,11 @@ def upload_data(request,userID):
 # df to jsonStr: df.to_json
 # json to str: dumps
 # str to json: loads
+
+@api_view(['GET'])
+def calculate_data(request,experimentID):
+    exp = Experiment.objects.get(pk=experimentID)
+    df = pd.DataFrame(loads(exp.signal))
+    temp = get_template(df)
+    res = analyze_data(df,temp)
+    return Response(res)

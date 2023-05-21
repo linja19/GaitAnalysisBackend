@@ -101,6 +101,8 @@ def calculate_CV_in_dict(l,name):
             i = i + 1
         except:
             pass
+    if i-1==0:
+        return 0
     var = sum / (i-1)
     SD = var**0.5
     return SD/ave
