@@ -24,6 +24,7 @@ def analyze_data(_data,template):
     except Exception as e:
         print(e)
         print(data)
+        return {}
     filted_df = pd.DataFrame(data={"t":data["t"],"Y":filtedDataY,"X":filtedDataX,"Z":filtedDataZ,"gZ":filtedDataGZ,"gX":filtedDataGX,"gY":filtedDataGY})
 
     accZ_max = max(filtedDataZ)
