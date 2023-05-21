@@ -30,8 +30,8 @@ def get_param(request,userID):
     double = list()
     for each in double_list:
         timestamp = math.floor(int(each.timestamp.replace(".0",""))/1000)
-        dt_object = datetime.fromtimestamp(timestamp)
-        double.append({"date":dt_object.strftime("%m/%d"),"value":each.value})
+        # dt_object = datetime.fromtimestamp(timestamp)
+        double.append({"timestamp":timestamp,"value":each.value})
 
     swing_list = SwingVariance.objects.filter(userID=user)
     swing = list()
@@ -41,14 +41,14 @@ def get_param(request,userID):
         else:
             timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
             dt_object = datetime.fromtimestamp(timestamp)
-            swing.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
+            swing.append({"timestamp":timestamp, "value": each.value})
 
     assym_list = Asymmetry.objects.filter(userID=user)
     assym = list()
     for each in assym_list:
         timestamp = math.floor(int(each.timestamp.replace(".0", "")) / 1000)
         dt_object = datetime.fromtimestamp(timestamp)
-        assym.append({"date": dt_object.strftime("%m/%d"), "value": each.value})
+        assym.append({"timestamp":timestamp, "value": each.value})
 
     res = {"double":double,"variation":swing,"asymm":assym}
     return Response(res)
