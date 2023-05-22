@@ -89,18 +89,25 @@ def upload_data(request,userID):
         return Response({"error":"Didn't found user template signal"})
     template = pd.DataFrame(loads(user.signal))
     res = analyze_data(df,template)
+    flag = False
     if not res:
         return Response({"error":"analyze data error"})
     if res["Double"]:
         double = DoubleSupportTime(userID=user,timestamp=res["time"],value=res["Double"])
         double.save()
+        flag = True
     if res["Asymmetry"]:
         assym = Asymmetry(userID=user,timestamp=res["time"],value=res["Asymmetry"])
         assym.save()
+        flag = True
     if res["SwingVar"] and not res["SwingVar"]=='NaN':
         swingVar = SwingVariance(userID=user,timestamp=res["time"],value=res["SwingVar"])
         swingVar.save()
-    return Response(res)
+        flag = True
+    if flag:
+        return Response(res)
+    else:
+        return Response({"error": "cannot analyze"})
 # df to jsonStr: df.to_json
 # json to str: dumps
 # str to json: loads
