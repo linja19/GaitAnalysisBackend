@@ -119,3 +119,10 @@ def calculate_data(request,experimentID):
     temp = get_template(df)
     res = analyze_data(df,temp)
     return Response(res)
+
+@api_view(['POST'])
+def draw(request):
+    data = request.data
+    df = pd.DataFrame(data)
+    plot_diagram(df)
+    return Response({})

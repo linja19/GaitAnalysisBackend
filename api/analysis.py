@@ -1,9 +1,18 @@
 import pandas as pd
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy import signal
 from .utils import *
 import copy
+
+def plot_diagram(data):
+    # data["t"] = data["t"].map(lambda x: (x - data.iloc[0, 0]) / 1000)
+    data = cut(data,1684845720000,1684845730000)
+    fig, axs = plt.subplots(3, 1, constrained_layout=True, sharex=True)
+    axs[0].plot(data["t"],data["gX"])
+    axs[1].plot(data["t"],data["gY"])
+    axs[2].plot(data["t"],data["gZ"])
+    plt.show()
 
 def analyze_data(_data,template):
     data = copy.deepcopy(_data)
